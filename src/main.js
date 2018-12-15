@@ -27,16 +27,6 @@ apibus.Register("login", (name, password) => {
 
   return Promise.reject(false);
 });
-
-api
-  .login("admin", "admin")
-  .then(res => {
-    console.log(res);
-  })
-  .catch(err => {
-    console.log(err);
-  });
-
 apibus.Register("user", {
   getInfo: () => {
     return true;
@@ -48,6 +38,28 @@ apibus.Register("user", {
     return Promise.reject(false);
   }
 });
+apibus.Register("getUser", {
+  _getSex: function(value) {
+    if (value == 1) {
+      return "shuaige";
+    }
+    if (value == 2) {
+      return "meinv";
+    }
+    return "renyao";
+  },
+  getInfo: function(value) {
+    return "nihao" + this._getSex(value);
+  }
+});
+api
+  .login("admin", "admin")
+  .then(res => {
+    console.log(res);
+  })
+  .catch(err => {
+    console.log(err);
+  });
 
 api.user
   .getInfo()
@@ -65,20 +77,7 @@ api.user
   .catch(err => {
     console.log("login:" + err);
   });
-apibus.Register("getUser", {
-  _getSex: function(value) {
-    if (value == 1) {
-      return "shuaige";
-    }
-    if (value == 2) {
-      return "meinv";
-    }
-    return "renyao";
-  },
-  getInfo: function(value) {
-    return "nihao" + this._getSex(value);
-  }
-});
+
 /*api.getUser.getInfo(2).then(res => {
   console.log("getUser:" + res);
 });*/
@@ -88,6 +87,7 @@ apibus.SetGlobal("funDemo", () => {
 });
 apibus.SetGlobal("str", "string");
 apibus.SetGlobal("obj", { name: "zhangshan" });
+//取值
 apibus.G.funDemo(); // or G.funDemo()
 console.log(apibus.G.str); //or G.str
 console.log(G.obj);
